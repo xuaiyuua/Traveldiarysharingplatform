@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旅游日记共享平台</title>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #f0f0f0;
+            padding: 10px;
+        }
+
+        .carousel img {
+            width: 100%;
+            height: 300px;
+        }
+
+        .hot-spots {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .spot {
+            width: 30%;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .spot img {
+            width: 100%;
+            height: 200px;
+        }
+
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .service {
+            width: 30%;
+            text-align: center;
+            margin: 10px;
+        }
+
+        footer {
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 10px;
+        }
+
+
+        .recommendation-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 20px;
+        }
+
+        .recommendation-card {
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .recommendation-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .recommendation-card h3 {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .recommendation-card p {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+
+    </style>
+</head>
+<body>
+<!-- 头部 -->
+<header class="container-fluid">
+    <div class="row">
+        <div class="col-10 d-flex align-items-center">
+            <h1>旅游日记共享平台</h1>
+        </div>
+    </div>
+</header>
+<!-- 导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/spot/to_spotList">景点列表</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">旅游路线</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">门票预订</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/to_login">用户登录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/to_userself">个人信息</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/toLogin">管理员登录</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- 主体内容区域 -->
+<main class="container mt-3">
+    <!-- 轮播图部分 -->
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/img/1.泰山/图1.png" class="d-block w-100" alt="景点1">
+            </div>
+            <div class="carousel-item">
+                <img src="/img/1.泰山/图2.png" class="d-block w-100" alt="景点2">
+            </div>
+            <div class="carousel-item">
+                <img src="/img/1.泰山/图3.png" class="d-block w-100" alt="景点3">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <!-- 热门景点推荐 -->
+    <section class="container">
+        <div class="recommendation-container">
+            <a th:each="spot,spotstat:${spotList}" th:href="'spot/to_detail/'+${spot.getSpotId()}">
+                <div class="recommendation-card">
+                    <img th:src="'/img/'+${spot.getImageUrl()}+'/图1.png'" class="card-img-top" alt="热门景点1">
+                    <div class="card-body">
+                        <p class="card-text" th:text="${spot.getDescription()}">
+                            泰山，又名岱山、岱宗、岱岳、东岳、泰岳，为五岳之一，有“五岳之首”“五岳独尊”“天下第一山”之称。</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+    <!-- 景区服务介绍 -->
+    <div class="services mt-3">
+        <h2>景区服务</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">餐饮服务：提供各种美味的当地特色美食。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">住宿服务：提供舒适的酒店和民宿。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">交通服务：方便的交通设施，便于您的出行。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</main>
+<!-- 底部 -->
+<footer class="container-fluid mt-3">
+    <p>版权所有 &copy; 2025 旅游日记共享平台</p>
+    <p>联系电话：123456789</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+</body>
+</html>

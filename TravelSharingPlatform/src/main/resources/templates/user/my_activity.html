@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>我的活动</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+  <script src="/js/jquery-3.2.1.slim.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  <script th:src="@{/js/script.js}"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    label {
+      display: inline-block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="file"],
+    input[type="text"] {
+      margin-bottom: 15px;
+    }
+
+    button {
+      float: right;
+    }
+  </style>
+</head>
+
+<body>
+
+<div th:replace="~{user/userself::topbar}"></div>
+<div class="container-fluid">
+  <div class="row">
+    <div th:replace="~{user/userself::sidebar(active='profile.html')}"></div>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th><input type="checkbox" id="selectAll"></th>
+          <th>活动标题</th>
+          <th>活动正文内容</th>
+          <th>发布时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="activityinfo:${activityList}" th:id="|tr${activityinfo.getActivityId()}|">
+          <td><input type="checkbox"></td>
+          <td th:text="${activityinfo.getActivityId()}" th:hidden="hidden"></td>
+          <td th:text="${activityinfo.getActivityTitle()}"></td>
+          <td th:text="${activityinfo.getActivityDescription()}"></td>
+          <td th:text="${#dates.format(activityinfo.getCreateTime(),'yyyy-MM-dd')}"></td>
+          <td>
+            <a th:href="'/user/checkActivity/'+${activityinfo.getActivityId()}" class="btn btn-primary" id="checkActivity">查看</a>
+            <a th:href="'/user/deleteActivity/'+${activityinfo.getActivityId()}" class="btn btn-danger" id="deleteLink">删除</a>
+          </td>
+        </tr>
+        <!-- 可以根据需要添加更多行 -->
+        </tbody>
+      </table>
+    </main>
+
+  </div>
+</div>
+</body>
+
+</html>

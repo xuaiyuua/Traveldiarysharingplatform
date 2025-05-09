@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日志详情</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/js/jquery-3.4.1.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 调整轮播图图片宽度相关样式 */
+    .carousel img {
+      width: 100%;
+      height: 300px;
+    }
+
+    .carousel-item img {
+      width: 60%!important;
+      margin: 0 auto;
+    }
+
+    /* 调整轮播图左右控制按钮的样式，使其位置更适配图片 */
+    .carousel-control-prev,
+    .carousel-control-next {
+      width: 10%;
+      height: 100%;
+      top: 0;
+      bottom: 0;
+      margin: auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.8;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      width: 30px;
+      height: 30px;
+    }
+
+    .hot-spots {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    .spot {
+      width: 30%;
+      text-align: center;
+      margin: 10px;
+    }
+
+    .spot img {
+      width: 100%;
+      height: 200px;
+    }
+
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    .service {
+      width: 30%;
+      text-align: center;
+      margin: 10px;
+    }
+
+    footer {
+      background-color: #f0f0f0;
+      text-align: center;
+      padding: 10px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    nav ul li {
+      margin-right: 1rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #ffc107;
+    }
+  </style>
+</head>
+
+<body>
+<!-- 头部 -->
+<header class="bg-white shadow-md">
+  <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-800">旅游日记共享平台</h1>
+    <div class="hidden md:block">
+      <nav>
+        <ul class="flex space-x-4">
+          <li><a href="/" class="text-gray-700 hover:text-yellow-500">首页</a></li>
+          <li><a href="#" class="text-gray-700 hover:text-yellow-500">搜索日志</a></li>
+          <li><a href="#" class="text-gray-700 hover:text-yellow-500">组团旅游活动</a></li>
+          <li><a href="#" class="text-gray-700 hover:text-yellow-500">我的活动</a></li>
+          <li><a href="/user/to_login" class="text-gray-700 hover:text-yellow-500">用户登录</a></li>
+          <li><a href="/user/to_userself" class="text-gray-700 hover:text-yellow-500">个人信息</a></li>
+          <li><a href="/admin/toLogin" class="text-gray-700 hover:text-yellow-500">管理员登录</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="md:hidden">
+      <button class="text-gray-700 focus:outline-none">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="container">
+  <!-- 景点图片轮播 -->
+  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" style="margin-top: 20px">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+              aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+              aria-label="Slide 2"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img th:src="'/img/'+${log.getLogImages()}+'/图1.png'" class="d-block w-100" alt="景点图片1">
+      </div>
+      <div class="carousel-item">
+        <img th:src="'/img/'+${log.getLogImages()}+'/图2.png'" class="d-block w-100" alt="景点图片2">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <br>
+  <!-- 景点信息展示 -->
+  <div class="container mt-5">
+    <div class="card">
+      <div class="card-header">
+        日志详情
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered table-hover">
+          <tbody>
+          <tr>
+            <th>日志标题：</th>
+            <td th:text="${log.getLogTitle()}"></td>
+          </tr>
+          <tr>
+            <th>日志描述：</th>
+            <td th:text="${log.getLogContent()}"></td>
+          </tr>
+          <tr>
+            <th>发布时间：</th>
+            <td th:utext="${#dates.format(log.getPublishTime(), 'yyyy-MM-dd')}"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- 按钮容器 -->
+    <div class="button-container">
+      <!-- 发布按钮 -->
+      <button type="button" class="btn btn-success" id="commentButton">发表评论</button>
+    </div>
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>用户名</th>
+        <th>评论内容</th>
+        <th>评论时间</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="Comment:${comment}" th:id="|tr${Comment.getCommentId()}|">
+        <td th:text="匿名用户"></td>
+        <td th:text="${Comment.getCommentContent()}"></td>
+        <td th:text="${#dates.format(Comment.getCommentTime(),'yyyy-MM-dd')}"></td>
+      </tr>
+      <!-- 可以根据需要添加更多行 -->
+      </tbody>
+    </table>
+
+  </div>
+  <!-- 评论弹窗 -->
+  <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="commentModalLabel">发表评论</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="commentForm">
+            <div class="mb-3">
+              <label for="comment" class="form-label">评论</label>
+              <input type="text" step="0.01" class="form-control" id="comment" name="comment">
+            </div>
+            <input type="hidden" th:value="${log.getLogId()}" name="logId" id="logId">
+            <input type="hidden" th:value="${session.user}" name="userName" id="userName">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary" id="confirmReservationButton">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 引入Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<!-- 引入jQuery库 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- 引入Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    // 点击预约按钮显示弹窗
+    $('#commentButton').click(function () {
+      $('#commentModal').modal('show');
+    });
+
+    // 点击确定预约按钮提交表单
+    $('#confirmReservationButton').click(function () {
+      // 这里可以添加一些简单的前端验证逻辑，比如必填项是否填写等
+      if ($('#visitDate').val() && $('#quantity').val()) {
+        // 提交表单到后端控制器，这里假设后端接收的接口地址是 /reservation/submit
+        // 实际需要根据你的后端路由进行修改
+        $('#reservationForm').attr('action', '/user/submit');
+        $('#reservationForm').submit();
+      }
+    });
+
+
+  });
+</script>
+
+
+
+
+</body>
+
+</html>

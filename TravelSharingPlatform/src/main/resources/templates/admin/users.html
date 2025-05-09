@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户信息管理</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <script src="/js/jquery-3.2.1.slim.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div th:replace="~{admin/commons::topbar}"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{admin/commons::sidebar(active='admin/users.html')}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+            <form  th:action="@{/admin/searchUser}" method="post">
+                <div class="form-group row">
+                    <label for="username" class="col-sm-2 col-form-label">用户名称:</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名称">
+                    </div>
+                    <label for="phone" class="col-sm-2 col-form-label">手机号码:</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入手机号码">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn btn-primary mr-2" id="searchBtn">查询</button>
+                        <button type="button" class="btn btn-secondary" id="resetBtn">重置</button>
+                    </div>
+                </div>
+            </form>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" id="selectAll"></th>
+                    <th>用户ID</th>
+                    <th>用户名</th>
+                    <th>性别</th>
+                    <th>出生日期</th>
+                    <th>邮箱</th>
+                    <th>手机号</th>
+                    <th>居住城市</th>
+                    <th>职业</th>
+                    <th>用户等级</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="userinfo:${userList}" th:id="|tr${userinfo.getUserId()}|">
+                    <td><input type="checkbox"></td>
+                    <td th:text="${userinfo.getUserId()}"></td>
+                    <td th:text="${userinfo.getUsername()}"></td>
+                    <td th:text="${userinfo.getGender()}"></td>
+                    <td th:text="${#dates.format(userinfo.getBirthDate(),'yyyy-MM-dd')}"></td>
+                    <td th:text="${userinfo.getEmail()}"></td>
+                    <td th:text="${userinfo.getPhoneNumber()}"></td>
+                    <td th:text="${userinfo.getCity()}"></td>
+                    <td th:text="${userinfo.getOccupation()}"></td>
+                    <td th:text="${userinfo.getUserLevel()}"></td>
+
+                    <td>
+                        <a th:href="'/admin/deleteUser/'+${userinfo.getUserId()}" class="btn btn-danger" id="deleteLink">删除</a>
+                    </td>
+                </tr>
+                <!-- 可以根据需要添加更多行 -->
+                </tbody>
+            </table>
+
+
+
+        </main>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        // 全选/全不选功能
+        $('#selectAll').click(function () {
+            $('tbody input[type="checkbox"]').prop('checked', this.checked);
+        });
+
+
+
+        // 重置按钮点击事件
+        $('#resetBtn').click(function () {
+            $('#username').val('');
+            $('#phone').val('');
+            $('#status').val('');
+        });
+
+
+        // 修改按钮点击事件
+        $('#editBtn').click(function () {
+            // 可以在这里添加修改的逻辑，如获取选中行的数据等
+            alert('执行修改操作');
+        });
+    });
+</script>
+</body>
+
+</html>

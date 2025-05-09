@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdu.mapper.Travel_logMapper">
+  <resultMap id="BaseResultMap" type="com.qdu.pojo.Travel_log">
+    <id column="log_id" jdbcType="INTEGER" property="logId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="log_title" jdbcType="VARCHAR" property="logTitle" />
+    <result column="log_audio" jdbcType="VARCHAR" property="logAudio" />
+    <result column="log_video" jdbcType="VARCHAR" property="logVideo" />
+    <result column="log_images" jdbcType="VARCHAR" property="logImages" />
+    <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
+    <result column="log_content" jdbcType="LONGVARCHAR" property="logContent" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from travel_log
+    where log_id = #{logId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qdu.pojo.Travel_log">
+    insert into travel_log (log_id, user_id, log_title, 
+      log_audio, log_video, log_images, 
+      publish_time, log_content)
+    values (#{logId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{logTitle,jdbcType=VARCHAR}, 
+      #{logAudio,jdbcType=VARCHAR}, #{logVideo,jdbcType=VARCHAR}, #{logImages,jdbcType=VARCHAR}, 
+      #{publishTime,jdbcType=TIMESTAMP}, #{logContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.qdu.pojo.Travel_log">
+    update travel_log
+    set user_id = #{userId,jdbcType=INTEGER},
+      log_title = #{logTitle,jdbcType=VARCHAR},
+      log_audio = #{logAudio,jdbcType=VARCHAR},
+      log_video = #{logVideo,jdbcType=VARCHAR},
+      log_images = #{logImages,jdbcType=VARCHAR},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      log_content = #{logContent,jdbcType=LONGVARCHAR}
+    where log_id = #{logId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select log_id, user_id, log_title, log_audio, log_video, log_images, publish_time, 
+    log_content
+    from travel_log
+    where log_id = #{logId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select log_id, user_id, log_title, log_audio, log_video, log_images, publish_time, 
+    log_content
+    from travel_log
+  </select>
+  <select id="selectByUseridLike" resultMap="BaseResultMap">
+    select log_id, user_id, log_title, publish_time, log_content
+    from travel_log
+    where user_id like concat('%',#{user_id,jdbcType=VARCHAR},'%')
+  </select>
+  <select id="selectByTitleLike" resultMap="BaseResultMap">
+    select log_id, user_id, log_title, publish_time, log_content
+    from travel_log
+    where log_title like concat('%',#{log_title,jdbcType=VARCHAR},'%')
+  </select>
+  <select id="selectRandom" resultMap="BaseResultMap">
+    select log_id, user_id, log_title, publish_time, log_content, log_images
+    from travel_log
+    order by rand() limit 3
+  </select>
+</mapper>

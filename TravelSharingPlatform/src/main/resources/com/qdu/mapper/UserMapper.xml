@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdu.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.qdu.pojo.User">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="birth_date" jdbcType="DATE" property="birthDate" />
+    <result column="id_number" jdbcType="VARCHAR" property="idNumber" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="occupation" jdbcType="VARCHAR" property="occupation" />
+    <result column="user_level" jdbcType="INTEGER" property="userLevel" />
+    <result column="password_question" jdbcType="LONGVARCHAR" property="passwordQuestion" />
+    <result column="password_answer" jdbcType="LONGVARCHAR" property="passwordAnswer" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qdu.pojo.User">
+    insert into user (user_id, username, password,
+      gender, birth_date, id_number,
+      email, phone_number, city,
+      occupation, user_level, password_question,
+      password_answer)
+    values (#{userId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{gender,jdbcType=VARCHAR}, #{birthDate,jdbcType=DATE}, #{idNumber,jdbcType=VARCHAR},
+      #{email,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+      #{occupation,jdbcType=VARCHAR}, #{userLevel,jdbcType=INTEGER}, #{passwordQuestion,jdbcType=LONGVARCHAR},
+      #{passwordAnswer,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.qdu.pojo.User">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      birth_date = #{birthDate,jdbcType=DATE},
+      id_number = #{idNumber,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      occupation = #{occupation,jdbcType=VARCHAR},
+      user_level = #{userLevel,jdbcType=INTEGER},
+      password_question = #{passwordQuestion,jdbcType=LONGVARCHAR},
+      password_answer = #{passwordAnswer,jdbcType=LONGVARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select user_id, username, password, gender, birth_date, id_number, email, phone_number,
+    city, occupation, user_level, password_question, password_answer
+    from user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select user_id, username, password, gender, birth_date, id_number, email, phone_number,
+    city, occupation, user_level, password_question, password_answer
+    from user
+  </select>
+  <select id="selectByUsernameLike" resultMap="BaseResultMap">
+    select user_id, username, password, gender, birth_date, id_number, email, phone_number,
+           city, occupation, user_level
+    from user
+    where username like concat('%',#{username,jdbcType=VARCHAR},'%')
+  </select>
+  <select id="selectByPhoneLike" resultMap="BaseResultMap">
+    select user_id, username, password, gender, birth_date, id_number, email, phone_number,
+           city, occupation, user_level
+    from user
+    where phone_number like concat('%',#{phone_number,jdbcType=VARCHAR},'%')
+  </select>
+  <select id="selectUser" resultMap="BaseResultMap">
+    select  username, password
+    from user
+    where username = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByUsername" resultMap="BaseResultMap">
+    select user_id, username, password, gender, birth_date, id_number, email, phone_number,
+           city, occupation, user_level
+    from user
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+  <update id="updateByUsername">
+    update user
+    set gender = #{gender,jdbcType=VARCHAR},
+        email = #{email,jdbcType=VARCHAR},
+        phone_number = #{phoneNumber,jdbcType=VARCHAR},
+        city = #{city,jdbcType=VARCHAR},
+        occupation = #{occupation,jdbcType=VARCHAR}
+    where username = #{username,jdbcType=VARCHAR}
+  </update>
+  <update id="changePwdByUsername" parameterType="com.qdu.pojo.User">
+    update user
+    set password = #{password,jdbcType=VARCHAR}
+    where username = #{username,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

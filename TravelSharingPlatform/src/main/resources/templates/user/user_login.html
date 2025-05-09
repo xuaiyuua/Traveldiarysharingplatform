@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/css/signin.css}">
+</head>
+<body class="text-center">
+<form class="form-signin" th:action="@{/user/login}">
+
+  <h3 class="mb-4" th:text="#{login.tip}"></h3>
+  <input type="text" name="username" class="form-control"
+         th:placeholder="#{login.username}" required autofocus>
+  <input type="password" name="password" class="form-control "
+         th:placeholder="#{login.password}" required>
+  <p style="color: red;font-size: 16px" th:text="${msg}"
+     th:if="${not#strings.isEmpty(msg)}"></p>
+  <div class="checkbox mb-3">
+    <label>
+      <input type="checkbox" value="remember-me">[[#{login.remember}]]
+    </label>
+  </div>
+  <button class="btn btn-lg btn-primary btn-block" type="submit" >[[#{login.btn}]]</button>
+  <p class="mt-5 mb-3 text-muted">©2020-2024</p>
+  <a class="btn btn-sm" th:href="@{/user/to_register}")>注册</a>
+  <a class="btn btn-sm" th:href="@{/index.html(lang='zh_CN')}">中文</a>
+  <a class="btn btn-sm" th:href="@{/index.html(lang='en_US')}">English</a>
+
+</form>
+</body>
+</html>

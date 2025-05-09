@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活动管理</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <script src="/js/jquery-3.2.1.slim.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div th:replace="~{admin/commons::topbar}"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{admin/commons::sidebar(active='admin/activity.html')}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+            <form  th:action="@{/admin/searchActivity}" method="post">
+                <div class="form-group row">
+                    <label for="userid" class="col-sm-2 col-form-label">发布用户id:</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="userid" name="userid" placeholder="请输入用户id">
+                    </div>
+                    <label for="activitytitle" class="col-sm-2 col-form-label">活动标题:</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="activitytitle" name="activitytitle" placeholder="请输入活动标题">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn btn-primary mr-2" id="searchBtn">查询</button>
+                        <button type="button" class="btn btn-secondary" id="resetBtn">重置</button>
+                    </div>
+                </div>
+            </form>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" id="selectAll"></th>
+                    <th>活动ID</th>
+                    <th>发布用户id</th>
+                    <th>活动标题</th>
+                    <th>活动正文内容</th>
+                    <th>发布时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="activityinfo:${activityList}" th:id="|tr${activityinfo.getActivityId()}|">
+                    <td><input type="checkbox"></td>
+                    <td th:text="${activityinfo.getActivityId()}"></td>
+                    <td th:text="${activityinfo.getUserId()}"></td>
+                    <td th:text="${activityinfo.getActivityTitle()}"></td>
+                    <td th:text="${activityinfo.getActivityDescription()}"></td>
+                    <td th:text="${#dates.format(activityinfo.getCreateTime(),'yyyy-MM-dd')}"></td>
+                    <td>
+                        <a th:href="'/admin/deleteActivity/'+${activityinfo.getActivityId()}" class="btn btn-danger" id="deleteLink">删除</a>
+                    </td>
+                </tr>
+                <!-- 可以根据需要添加更多行 -->
+                </tbody>
+            </table>
+
+
+
+        </main>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        // 全选/全不选功能
+        $('#selectAll').click(function () {
+            $('tbody input[type="checkbox"]').prop('checked', this.checked);
+        });
+
+
+
+        // 重置按钮点击事件
+        $('#resetBtn').click(function () {
+            $('#username').val('');
+            $('#phone').val('');
+            $('#status').val('');
+        });
+
+
+        // 修改按钮点击事件
+        $('#editBtn').click(function () {
+            // 可以在这里添加修改的逻辑，如获取选中行的数据等
+            alert('执行修改操作');
+        });
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdu.mapper.Group_travel_activityMapper">
+  <resultMap id="BaseResultMap" type="com.qdu.pojo.Group_travel_activity">
+    <id column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="activity_title" jdbcType="VARCHAR" property="activityTitle" />
+    <result column="activity_status" jdbcType="VARCHAR" property="activityStatus" />
+    <result column="activity_images" jdbcType="VARCHAR" property="activityImages" />
+    <result column="activity_start_time" jdbcType="TIMESTAMP" property="activityStartTime" />
+    <result column="activity_end_time" jdbcType="TIMESTAMP" property="activityEndTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="activity_description" jdbcType="LONGVARCHAR" property="activityDescription" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from group_travel_activity
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qdu.pojo.Group_travel_activity">
+    insert into group_travel_activity (activity_id, user_id, activity_title, 
+      activity_status, activity_images, activity_start_time, 
+      activity_end_time, create_time, activity_description
+      )
+    values (#{activityId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{activityTitle,jdbcType=VARCHAR}, 
+      #{activityStatus,jdbcType=VARCHAR}, #{activityImages,jdbcType=VARCHAR}, #{activityStartTime,jdbcType=TIMESTAMP}, 
+      #{activityEndTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{activityDescription,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.qdu.pojo.Group_travel_activity">
+    update group_travel_activity
+    set user_id = #{userId,jdbcType=INTEGER},
+      activity_title = #{activityTitle,jdbcType=VARCHAR},
+      activity_status = #{activityStatus,jdbcType=VARCHAR},
+      activity_images = #{activityImages,jdbcType=VARCHAR},
+      activity_start_time = #{activityStartTime,jdbcType=TIMESTAMP},
+      activity_end_time = #{activityEndTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      activity_description = #{activityDescription,jdbcType=LONGVARCHAR}
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select activity_id, user_id, activity_title, activity_status, activity_images, activity_start_time, 
+    activity_end_time, create_time, activity_description
+    from group_travel_activity
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select activity_id, user_id, activity_title, activity_status, activity_images, activity_start_time, 
+    activity_end_time, create_time, activity_description
+    from group_travel_activity
+  </select>
+  <select id="selectByActivityUseridLike" resultMap="BaseResultMap">
+    select activity_id, user_id, activity_title, create_time, activity_description
+    from group_travel_activity
+    where user_id like concat('%',#{user_id,jdbcType=VARCHAR},'%')
+  </select>
+  <select id="selectByActivityTitleidLike" resultMap="BaseResultMap">
+    select activity_id, user_id, activity_title, create_time, activity_description
+    from group_travel_activity
+    where activity_title like concat('%',#{activity_title,jdbcType=VARCHAR},'%')
+  </select>
+
+</mapper>

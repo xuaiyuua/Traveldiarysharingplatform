@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+    <meta charset="UTF-8">
+    <title>个人资料</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <script src="/js/jquery-3.2.1.slim.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script th:src="@{/js/script.js}"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        label {
+            display: inline-block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="file"],
+        input[type="text"] {
+            margin-bottom: 15px;
+        }
+
+        button {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{user/userself::topbar}"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{user/userself::sidebar(active='profile.html')}"></div>
+
+            <div class="container">
+                <h1 class="mt-4 mb-4">个人资料</h1>
+                <form th:action="@{/user/update}"  method="post">
+                    <div>
+                        <label for="username">用户名：</label>
+                        <input type="text" class="form-control" id="username" name="username" th:value="${user.getUsername()}" readonly>
+                    </div>
+                    <div>
+                        <label for="phone">电话：</label>
+                        <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]{11}" th:value="${user.getPhoneNumber()}" readonly>
+                    </div>
+                    <div>
+                        <label for="email">邮箱：</label>
+                        <input type="email" class="form-control" id="email" name="email" th:value="${user.getEmail()}" required>
+                    </div>
+                    <div>
+                        <label for="city">城市：</label>
+                        <input type="text" class="form-control" id="city" name="city" th:value="${user.getCity()}" required>
+                    </div>
+                    <div>
+                        <label for="occupation">职业：</label>
+                        <input type="text" class="form-control" id="occupation" name="occupation" th:value="${user.getOccupation()}" required>
+                    </div>
+                    <br>
+                    <div>
+                        <label for="gender">性别：</label>
+                        <select id="gender" name="gender">
+                            <option value="男" >男</option>
+                            <option value="女" >女</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">更新</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

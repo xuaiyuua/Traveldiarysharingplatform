@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>注册</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base th:href="@{/}">
+
+    <!--    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}"/>-->
+    <link rel="stylesheet" th:href="@{css/registerstyle.css}"/>
+    <link rel="stylesheet" th:href="@{/css/userselfbg.css}"/>
+
+    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script th:src="@{/js/script.js}"></script>
+</head>
+<body>
+<h1>用户注册</h1>
+<form th:action="@{/user/register}" method="post" style="width: 350px">
+    <label for="username">用户名：</label>
+    <input type="text" id="username" name="username" required style="width: 100%">
+    <label for="password">密码：</label>
+    <input type="password" id="password" name="password" required style="width: 100%">
+    <label for="confirm_password">确认密码：</label>
+    <input type="password" id="confirm_password" name="confirm_password" required style="width: 100%">
+    <label for="phone">手机号：</label>
+    <input type="tel" id="phone" name="phone" pattern="[0-9]{11}" required style="width: 100%">
+    <label for="email">邮箱：</label>
+    <input type="email" id="email" name="email" required style="width: 100%">
+    <p style="color: red;font-size: 16px" th:text="${msg}"
+       th:if="${not#strings.isEmpty(msg)}"></p>
+    <button type="submit" style="margin-bottom: 20px; margin-top: 20px;">注册</button>
+    <div id="password_alert" class="alert"></div>
+</form>
+
+
+
+<script>
+    var password = document.getElementById("userpwd");
+    var confirm_password = document.getElementById("confirm_password");
+    var password_alert = document.getElementById("password_alert");
+    function validatePassword() {
+        if (password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("两次密码不一致");
+            password_alert.innerHTML = "请确认两次输入的密码一致";
+        } else {
+            confirm_password.setCustomValidity("");
+            password_alert.innerHTML = "";
+        }
+    }
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+</script>
+</body>
+</html>

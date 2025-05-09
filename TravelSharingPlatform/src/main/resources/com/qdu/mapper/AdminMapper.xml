@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdu.mapper.AdminMapper">
+  <resultMap id="BaseResultMap" type="com.qdu.pojo.Admin">
+    <id column="admin_id" jdbcType="INTEGER" property="adminId" />
+    <result column="admin_username" jdbcType="VARCHAR" property="adminUsername" />
+    <result column="admin_password" jdbcType="VARCHAR" property="adminPassword" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from admin
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qdu.pojo.Admin">
+    insert into admin (admin_id, admin_username, admin_password
+      )
+    values (#{adminId,jdbcType=INTEGER}, #{adminUsername,jdbcType=VARCHAR}, #{adminPassword,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.qdu.pojo.Admin">
+    update admin
+    set admin_username = #{adminUsername,jdbcType=VARCHAR},
+      admin_password = #{adminPassword,jdbcType=VARCHAR}
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select admin_id, admin_username, admin_password
+    from admin
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select admin_id, admin_username, admin_password
+    from admin
+  </select>
+  <select id="selectAdmin" resultMap="BaseResultMap">
+    select admin_id, admin_username, admin_password
+    from admin
+    where admin_username = #{adminname,jdbcType=VARCHAR} and admin_password = #{password,jdbcType=VARCHAR}
+  </select>
+</mapper>

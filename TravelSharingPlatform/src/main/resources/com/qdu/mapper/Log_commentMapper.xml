@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdu.mapper.Log_commentMapper">
+  <resultMap id="BaseResultMap" type="com.qdu.pojo.Log_comment">
+    <id column="comment_id" jdbcType="INTEGER" property="commentId" />
+    <result column="log_id" jdbcType="INTEGER" property="logId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="comment_time" jdbcType="TIMESTAMP" property="commentTime" />
+    <result column="comment_content" jdbcType="LONGVARCHAR" property="commentContent" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from log_comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qdu.pojo.Log_comment">
+    insert into log_comment (comment_id, log_id, user_id, 
+      comment_time, comment_content)
+    values (#{commentId,jdbcType=INTEGER}, #{logId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{commentTime,jdbcType=TIMESTAMP}, #{commentContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.qdu.pojo.Log_comment">
+    update log_comment
+    set log_id = #{logId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      comment_time = #{commentTime,jdbcType=TIMESTAMP},
+      comment_content = #{commentContent,jdbcType=LONGVARCHAR}
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select comment_id, log_id, user_id, comment_time, comment_content
+    from log_comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByLogId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select comment_id, log_id, user_id, comment_time, comment_content
+    from log_comment
+    where log_id = #{logid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select comment_id, log_id, user_id, comment_time, comment_content
+    from log_comment
+  </select>
+</mapper>
