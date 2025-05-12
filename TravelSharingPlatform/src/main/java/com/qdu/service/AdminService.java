@@ -1,9 +1,6 @@
 package com.qdu.service;
 
-import com.qdu.pojo.Admin;
-import com.qdu.pojo.Group_travel_activity;
-import com.qdu.pojo.Travel_log;
-import com.qdu.pojo.User;
+import com.qdu.pojo.*;
 
 
 import java.util.List;
@@ -24,8 +21,12 @@ public interface AdminService {
 
     List<Group_travel_activity> getActivityLikeId(String userid);
 
+    List<Activity_participant> getParticipantLikeId(String userid);
+
     //根据手机号模糊查询
     List<Group_travel_activity> getActivityLikeTitle(String activitytitle);
 
     void deleteActivity(int activityId);
+
+    void deleteParticipant(int participantId);
 }

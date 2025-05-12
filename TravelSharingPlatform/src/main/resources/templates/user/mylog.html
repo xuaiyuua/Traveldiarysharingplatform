@@ -73,7 +73,7 @@
           <td th:text="${loginfo.getLogContent()}"></td>
           <td th:text="${#dates.format(loginfo.getPublishTime(),'yyyy-MM-dd')}"></td>
           <td>
-            <a th:href="'/user/checkLog/'+${loginfo.getLogId()}" class="btn btn-primary" id="查看">查看</a>
+            <a th:href="'/log/to_detail/'+${loginfo.getLogId()}" class="btn btn-primary" id="查看">查看</a>
             <a th:href="'/user/deleteLog/'+${loginfo.getLogId()}" class="btn btn-danger" id="deleteLink">删除</a>
           </td>
         </tr>

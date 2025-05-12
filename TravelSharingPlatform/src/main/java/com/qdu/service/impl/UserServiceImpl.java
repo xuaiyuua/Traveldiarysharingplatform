@@ -1,8 +1,9 @@
 package com.qdu.service.impl;
 
-import com.qdu.pojo.Log_comment;
-import com.qdu.pojo.Travel_log;
-import com.qdu.pojo.User;
+import com.qdu.mapper.Activity_participantMapper;
+import com.qdu.mapper.Group_travel_activityMapper;
+import com.qdu.mapper.Log_commentMapper;
+import com.qdu.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,12 @@ public class UserServiceImpl implements com.qdu.service.UserService{
 
     @Autowired
     private com.qdu.mapper.Log_commentMapper logCommentMapper;
+
+    @Autowired
+    private Group_travel_activityMapper groupTravelActivityMapper;
+
+    @Autowired
+    private Activity_participantMapper activityParticipantMapper;
 
 
     @Override
@@ -70,6 +77,11 @@ public class UserServiceImpl implements com.qdu.service.UserService{
     }
 
     @Override
+    public Group_travel_activity getActivityById(int activityId) {
+        return groupTravelActivityMapper.selectByPrimaryKey(activityId);
+    }
+
+    @Override
     public List<Log_comment> getCommentByLogId(int logid) {
         return logCommentMapper.selectByLogId(logid);
     }
@@ -93,6 +105,26 @@ public class UserServiceImpl implements com.qdu.service.UserService{
     @Override
     public void changepwd(String username, String password) {
         userMapper.changePwdByUsername(username,password);
+    }
+
+    @Override
+    public void addComment(Log_comment comment) {
+        logCommentMapper.insert(comment);
+    }
+
+    @Override
+    public void addLog(Travel_log log) {
+        travelLogMapper.insert(log);
+    }
+
+    @Override
+    public void addActivity(Group_travel_activity activity) {
+        groupTravelActivityMapper.insert(activity);
+    }
+
+    @Override
+    public void addParticipant(Activity_participant activityParticipant) {
+        activityParticipantMapper.insert(activityParticipant);
     }
 
 }

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>日志详情</title>
+  <title>活动详情</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/js/jquery-3.4.1.min.js"></script>
@@ -125,7 +125,7 @@
     <div class="hidden md:block">
       <nav>
         <ul class="flex space-x-4">
-          <li><a href="/" class="text-gray-700 hover:text-yellow-500">首页</a></li>
+          <li><a href="/static" class="text-gray-700 hover:text-yellow-500">首页</a></li>
           <li><a href="#" class="text-gray-700 hover:text-yellow-500">搜索日志</a></li>
           <li><a href="#" class="text-gray-700 hover:text-yellow-500">组团旅游活动</a></li>
           <li><a href="/user/to_login" class="text-gray-700 hover:text-yellow-500">用户登录</a></li>
@@ -152,10 +152,10 @@
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img th:src="'/img/'+${log.getLogImages()}+'/图1.png'" class="d-block w-100" alt="景点图片1">
+        <img th:src="'/img/'+${activity.getActivityImages()}+'/图1.png'" class="d-block w-100" alt="景点图片1">
       </div>
       <div class="carousel-item">
-        <img th:src="'/img/'+${log.getLogImages()}+'/图2.png'" class="d-block w-100" alt="景点图片2">
+        <img th:src="'/img/'+${activity.getActivityImages()}+'/图2.png'" class="d-block w-100" alt="景点图片2">
       </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -174,22 +174,22 @@
   <div class="container mt-5">
     <div class="card">
       <div class="card-header">
-        日志详情
+        活动详情
       </div>
       <div class="card-body">
         <table class="table table-bordered table-hover">
           <tbody>
           <tr>
-            <th>日志标题：</th>
-            <td th:text="${log.getLogTitle()}"></td>
+            <th>活动标题：</th>
+            <td th:text="${activity.getActivityTitle()}"></td>
           </tr>
           <tr>
-            <th>日志描述：</th>
-            <td th:text="${log.getLogContent()}"></td>
+            <th>活动描述：</th>
+            <td th:text="${activity.getActivityDescription()}"></td>
           </tr>
           <tr>
             <th>发布时间：</th>
-            <td th:utext="${#dates.format(log.getPublishTime(), 'yyyy-MM-dd')}"></td>
+            <td th:utext="${#dates.format(activity.getCreateTime(), 'yyyy-MM-dd')}"></td>
           </tr>
           </tbody>
         </table>
@@ -198,50 +198,32 @@
     <!-- 按钮容器 -->
     <div class="button-container">
       <!-- 发布按钮 -->
-      <button type="button" class="btn btn-success" id="commentButton">发表评论</button>
+      <button type="button" class="btn btn-success" id="activityButton">参加活动</button>
     </div>
 
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>用户名</th>
-        <th>评论内容</th>
-        <th>评论时间</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="Comment:${comment}" th:id="|tr${Comment.getCommentId()}|">
-        <td th:text="匿名用户"></td>
-        <td th:text="${Comment.getCommentContent()}"></td>
-        <td th:text="${#dates.format(Comment.getCommentTime(),'yyyy-MM-dd')}"></td>
-      </tr>
-      <!-- 可以根据需要添加更多行 -->
-      </tbody>
-    </table>
-
   </div>
-  <!-- 评论弹窗 -->
-  <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel"
+  <!-- 弹窗 -->
+  <div class="modal fade" id="activityModal" tabindex="-1" aria-labelledby="activityModalLabel"
        aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="commentModalLabel">发表评论</h5>
+          <h5 class="modal-title" id="activityModalLabel">确认参加活动</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="commentForm">
+          <form id="activityForm">
             <div class="mb-3">
-              <label for="comment" class="form-label">评论</label>
-              <input type="text" step="0.01" class="form-control" id="comment" name="comment">
+              <label for="activity" class="form-label">确认参加活动</label>
+              <input type="text" step="0.01" class="form-control" id="activity" name="activity" th:text="确认是否参加活动" th:type="hidden">
             </div>
-            <input type="hidden" th:value="${log.getLogId()}" name="logId" id="logId">
+            <input type="hidden" th:value="${activity.getActivityId()}" name="activityId" id="activityId">
             <input type="hidden" th:value="${session.user}" name="userName" id="userName">
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary" id="confirmCommentButton">确定</button>
+          <button type="button" class="btn btn-primary" id="confirmActivityButton">确定</button>
         </div>
       </div>
     </div>
@@ -258,18 +240,16 @@
 <script>
   $(document).ready(function () {
     // 点击预约按钮显示弹窗
-    $('#commentButton').click(function () {
-      $('#commentModal').modal('show');
+    $('#activityButton').click(function () {
+      $('#activityModal').modal('show');
     });
 
     // 点击确定预约按钮提交表单
-    $('#confirmCommentButton').click(function () {
+    $('#confirmActivityButton').click(function () {
       // 这里可以添加一些简单的前端验证逻辑，比如必填项是否填写等
-      if ($('#comment').val()) {
         // 实际需要根据你的后端路由进行修改
-        $('#commentForm').attr('action', '/user/comment_submit');
-        $('#commentForm').submit();
-      }
+        $('#activityForm').attr('action', '/user/activity_submit');
+        $('#activityForm').submit();
     });
 
 

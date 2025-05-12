@@ -1,7 +1,9 @@
 package com.qdu.service.impl;
 
+import com.qdu.mapper.Activity_participantMapper;
 import com.qdu.mapper.Group_travel_activityMapper;
 import com.qdu.mapper.Travel_logMapper;
+import com.qdu.pojo.Activity_participant;
 import com.qdu.pojo.Admin;
 import com.qdu.pojo.Group_travel_activity;
 import com.qdu.pojo.Travel_log;
@@ -23,6 +25,9 @@ public class AdminServiceImpl implements com.qdu.service.AdminService{
 
     @Autowired
     private Group_travel_activityMapper groupTravelActivityMapper;
+
+    @Autowired
+    private Activity_participantMapper activityParticipantMapper;
 
     @Override
     public Admin selectAdmin(String adminname, String password) {
@@ -59,6 +64,11 @@ public class AdminServiceImpl implements com.qdu.service.AdminService{
     }
 
     @Override
+    public List<Activity_participant> getParticipantLikeId(String userid) {
+        return activityParticipantMapper.selectByUseridLike(userid);
+    }
+
+    @Override
     public List<Group_travel_activity> getActivityLikeTitle(String activitytitle) {
         return groupTravelActivityMapper.selectByActivityTitleidLike(activitytitle);
     }
@@ -66,5 +76,10 @@ public class AdminServiceImpl implements com.qdu.service.AdminService{
     @Override
     public void deleteActivity(int activityId) {
         groupTravelActivityMapper.deleteByPrimaryKey(activityId);
+    }
+
+    @Override
+    public void deleteParticipant(int participantId) {
+        activityParticipantMapper.deleteByPrimaryKey(participantId);
     }
 }

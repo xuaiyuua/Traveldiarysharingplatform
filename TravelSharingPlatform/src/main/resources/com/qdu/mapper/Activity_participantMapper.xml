@@ -33,4 +33,9 @@
     select participant_id, activity_id, user_id, join_time
     from activity_participant
   </select>
+  <select id="selectByUseridLike" resultMap="BaseResultMap">
+    select participant_id, activity_id, user_id, join_time
+    from activity_participant
+    where user_id like concat('%',#{user_id,jdbcType=VARCHAR},'%')
+  </select>
 </mapper>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+    <meta charset="UTF-8">
+    <title>我的日志</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <script src="/js/jquery-3.2.1.slim.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script th:src="@{/js/script.js}"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 调整轮播图图片宽度相关样式 */
+        .carousel img {
+            width: 100%;
+            height: 300px;
+        }
+
+        .carousel-item img {
+            width: 60%!important;
+            margin: 0 auto;
+        }
+
+        /* 调整轮播图左右控制按钮的样式，使其位置更适配图片 */
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 10%;
+            height: 100%;
+            top: 0;
+            bottom: 0;
+            margin: auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            width: 30px;
+            height: 30px;
+        }
+
+        .hot-spots {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .spot {
+            width: 30%;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .spot img {
+            width: 100%;
+            height: 200px;
+        }
+
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .service {
+            width: 30%;
+            text-align: center;
+            margin: 10px;
+        }
+
+        footer {
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 10px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 1rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffc107;
+        }
+
+        .button1 {
+            position: absolute;
+            left: 300px;
+            top: 100px;
+        }
+
+        .button2 {
+            position: absolute;
+            left: 400px;
+            top: 100px;
+        }
+        </style>
+    </style>
+</head>
+
+<body>
+
+<div class="button-container">
+    <!-- 预约按钮 -->
+    <button type="button" class="btn btn-success button1" id="logButton">发布日志</button>
+    <button type="button" class="btn btn-success button2" id="activityButton">发布活动</button>
+</div>
+
+<div th:replace="~{user/userself::topbar}"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{user/userself::sidebar(active='profile.html')}"></div>
+
+    </div>
+    <!-- 预约弹窗 -->
+    <div class="modal fade" id="logModal" tabindex="-1" aria-labelledby="logModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logModalLabel">发布日志</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="logForm">
+                        <div class="mb-3">
+                            <label for="logTitle" class="form-label">日志标题</label>
+                            <input type="text" class="form-control" id="logTitle" name="logTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="logContent" class="form-label">日志内容</label>
+                            <input type="text" class="form-control" id="logContent" name="logContent" required>
+                        </div>
+                        <input type="hidden" th:value="${session.user}" name="userName1" id="userName1">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="confirmLogButton">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 预约弹窗 -->
+    <div class="modal fade" id="activityModal" tabindex="-1" aria-labelledby="activityModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="activityModalLabel">发布日志</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="activityForm">
+                        <div class="mb-3">
+                            <label for="activityTitle" class="form-label">活动标题</label>
+                            <input type="text" class="form-control" id="activityTitle" name="activityTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="activityDescription" class="form-label">活动内容</label>
+                            <input type="text" class="form-control" id="activityDescription" name="activityDescription" required>
+                        </div>
+                        <input type="hidden" th:value="${session.user}" name="userName2" id="userName2">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="confirmActivityButton">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- 引入Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // 点击预约按钮显示弹窗
+        $('#logButton').click(function () {
+            $('#logModal').modal('show');
+        });
+
+        // 点击确定预约按钮提交表单
+        $('#confirmLogButton').click(function () {
+            // 这里可以添加一些简单的前端验证逻辑，比如必填项是否填写等
+            if ($('#logTitle').val() && $('#logContent').val()) {
+                // 提交表单到后端控制器，这里假设后端接收的接口地址是 /reservation/submit
+                // 实际需要根据你的后端路由进行修改
+                $('#logForm').attr('action', '/log/submit');
+                $('#logForm').submit();
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        // 点击预约按钮显示弹窗
+        $('#activityButton').click(function () {
+            $('#activityModal').modal('show');
+        });
+
+        // 点击确定预约按钮提交表单
+        $('#confirmActivityButton').click(function () {
+            // 这里可以添加一些简单的前端验证逻辑，比如必填项是否填写等
+            if ($('#activityTitle').val() && $('#activityDescription').val()) {
+                // 提交表单到后端控制器，这里假设后端接收的接口地址是 /reservation/submit
+                // 实际需要根据你的后端路由进行修改
+                $('#activityForm').attr('action', '/activity/submit');
+                $('#activityForm').submit();
+            }
+        });
+    });
+</script>
+
+</body>
+
+</html>

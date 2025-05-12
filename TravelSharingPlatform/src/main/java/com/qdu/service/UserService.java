@@ -1,9 +1,6 @@
 package com.qdu.service;
 
-import com.qdu.pojo.Admin;
-import com.qdu.pojo.Log_comment;
-import com.qdu.pojo.Travel_log;
-import com.qdu.pojo.User;
+import com.qdu.pojo.*;
 
 import javax.xml.transform.Result;
 import java.util.List;
@@ -27,6 +24,8 @@ public interface UserService {
 
     Travel_log getLogById(int logid);
 
+    Group_travel_activity getActivityById(int activityId);
+
     List<Log_comment> getCommentByLogId(int logid);
 
     List<Travel_log> getThreeLog();
@@ -36,6 +35,14 @@ public interface UserService {
     Result updateByUsername(User user,String username);
 
     void changepwd(String username, String password);
+
+    void addComment(Log_comment comment);
+
+    void addLog(Travel_log log);
+
+    void addActivity(Group_travel_activity activity);
+
+    void addParticipant(Activity_participant activityParticipant);
 
 
 }
