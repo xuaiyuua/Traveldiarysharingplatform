@@ -3,6 +3,7 @@ package com.qdu.controller;
 import com.qdu.pojo.Log_comment;
 import com.qdu.pojo.Travel_log;
 import com.qdu.pojo.User;
+import com.qdu.service.AdminService;
 import com.qdu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,8 @@ public class logController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AdminService adminService;
 
     @RequestMapping("/to_detail/{logId}")
     public String log(@PathVariable int logId , Model model){
@@ -57,6 +60,33 @@ public class logController {
         userService.addLog(log);
 
         return "redirect:/user/publish";
+    }
+
+    @RequestMapping("/log")
+    public String loglist(Model model){
+        //查询日志列表
+        List<Travel_log> logList = adminService.getAllLog();
+        model.addAttribute("logList",logList);
+        //跳转到员工列表页面
+        return "/log/logsearch";
+    }
+
+    @RequestMapping ("/searchLog")
+    public String searchLog(@RequestParam(name = "logtitle", required = false) String logtitle, Model model){
+        System.out.println("++++++++++++++++++++");
+        System.out.println(logtitle);
+        List<Travel_log> logList =null;
+         if (logtitle!= null &&!logtitle.isEmpty()) {
+            // 执行根据手机号码的查询操作
+            logList = adminService.getLogLikeTitle(logtitle);
+
+        } else {
+
+            logList = adminService.getAllLog();
+        }
+
+        model.addAttribute("logList",logList);
+        return "log/logsearch";
     }
 
 }

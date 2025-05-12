@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>搜索日志</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+  <script src="/js/jquery-3.2.1.slim.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 调整轮播图图片宽度相关样式 */
+    .carousel img {
+      width: 100%;
+      height: 300px;
+    }
+
+    .carousel-item img {
+      width: 60%!important;
+      margin: 0 auto;
+    }
+
+    .spot img {
+      width: 100%;
+      height: 200px;
+    }
+
+    footer {
+      background-color: #f0f0f0;
+      text-align: center;
+      padding: 10px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    nav ul li {
+      margin-right: 1rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #ffc107;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<!-- 头部 -->
+<header class="bg-white shadow-md">
+  <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-800">旅游日记共享平台</h1>
+    <div class="hidden md:block">
+      <nav>
+        <ul class="flex space-x-4">
+          <li><a href="/" class="text-gray-700 hover:text-yellow-500">首页</a></li>
+          <li><a href="/log/log" class="text-gray-700 hover:text-yellow-500">搜索日志</a></li>
+          <li><a href="/activity/activity" class="text-gray-700 hover:text-yellow-500">组团旅游活动</a></li>
+          <li><a href="/user/to_login" class="text-gray-700 hover:text-yellow-500">用户登录</a></li>
+          <li><a href="/user/to_userself" class="text-gray-700 hover:text-yellow-500">个人信息</a></li>
+          <li><a href="/admin/toLogin" class="text-gray-700 hover:text-yellow-500">管理员登录</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+      <form  th:action="@{/log/searchLog}" method="post">
+        <div class="form-group row">
+          <label for="logtitle" class="col-sm-2 col-form-label">日志标题:</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="logtitle" name="logtitle" placeholder="请输入日志标题">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <button type="submit" class="btn btn-primary mr-2" id="searchBtn">查询</button>
+            <button type="button" class="btn btn-secondary" id="resetBtn">重置</button>
+          </div>
+        </div>
+      </form>
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>日志标题</th>
+          <th>日志正文内容</th>
+          <th>发布时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="loginfo:${logList}" th:id="|tr${loginfo.getLogId()}|">
+          <td th:text="${loginfo.getLogTitle()}"></td>
+          <td th:text="${loginfo.getLogContent()}"></td>
+          <td th:text="${#dates.format(loginfo.getPublishTime(),'yyyy-MM-dd')}"></td>
+          <td>
+            <a th:href="'/log/to_detail/'+${loginfo.getLogId()}" class="btn btn-primary" id="查看">查看</a>
+          </td>
+        </tr>
+        <!-- 可以根据需要添加更多行 -->
+        </tbody>
+      </table>
+
+
+
+    </main>
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function () {
+    // 全选/全不选功能
+    $('#selectAll').click(function () {
+      $('tbody input[type="checkbox"]').prop('checked', this.checked);
+    });
+
+    // 重置按钮点击事件
+    $('#resetBtn').click(function () {
+      $('#username').val('');
+      $('#phone').val('');
+      $('#status').val('');
+    });
+
+
+    // 修改按钮点击事件
+    $('#editBtn').click(function () {
+      // 可以在这里添加修改的逻辑，如获取选中行的数据等
+      alert('执行修改操作');
+    });
+  });
+</script>
+</body>
+
+</html>
