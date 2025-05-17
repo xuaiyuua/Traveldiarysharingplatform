@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,97 +8,20 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/js/jquery-3.4.1.min.js"></script>
-
     <style>
+        /* 全局样式 */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
             margin: 0;
             padding: 0;
         }
 
+        /* 导航栏样式 */
         header {
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .carousel img {
-            width: 100%;
-            height: 300px;
-        }
-
-        .hot-spots {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-
-        .spot {
-            width: 30%;
-            text-align: center;
-            margin: 10px;
-        }
-
-        .spot img {
-            width: 100%;
-            height: 200px;
-        }
-
-        .services {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-
-        .service {
-            width: 30%;
-            text-align: center;
-            margin: 10px;
-        }
-
-        footer {
-            background-color: #f0f0f0;
-            text-align: center;
-            padding: 10px;
-        }
-
-
-        .recommendation-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-gap: 20px;
-        }
-
-        .recommendation-card {
-            background-color: #f1f1f1;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .recommendation-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-
-        .recommendation-card h3 {
-            margin-top: 10px;
-            font-size: 18px;
-        }
-
-        .recommendation-card p {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
+            background-color: #3B82F6; /* 浅蓝色背景，对应Tailwind的blue-500 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
         }
 
         nav ul {
@@ -105,50 +29,157 @@
             margin: 0;
             padding: 0;
             display: flex;
+            justify-content: center;
         }
 
         nav ul li {
-            margin-right: 1rem;
+            margin: 0 15px;
         }
 
         nav ul li a {
             text-decoration: none;
-            color: #333;
+            color: #ffffff; /* 白色文字 */
+            font-size: 18px;
+            font-weight: 600;
             transition: color 0.3s ease;
         }
 
         nav ul li a:hover {
-            color: #ffc107;
+            color: #FFD700; /* 金色悬停效果 */
         }
 
-        a {
-            text-decoration: none;
+        /* 轮播图样式 */
+        .carousel {
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        /* 热门景点推荐样式 */
+        .recommendation-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-gap: 20px;
+            margin-top: 30px;
+        }
+
+        .recommendation-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .recommendation-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .recommendation-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .recommendation-card h3 {
+            margin: 15px;
+            font-size: 20px;
             color: #333;
-            transition: color 0.3s ease;
         }
 
+        .recommendation-card p {
+            margin: 0 15px 15px;
+            font-size: 14px;
+            color: #666;
+        }
 
+        /* 移除推荐日志链接的下划线 */
+        .recommendation-container a {
+            text-decoration: none;
+        }
+
+        /* 景区服务介绍样式 */
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .service {
+            width: 300px;
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .service:hover {
+            transform: translateY(-5px);
+        }
+
+        .service i {
+            font-size: 40px;
+            color: #3B82F6; /* 浅蓝色图标 */
+            margin-bottom: 10px;
+        }
+
+        .service p {
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* 底部样式 */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+
+        /* AI 助手样式 */
+        .webchat-container {
+            z-index: 100;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .webchat-bubble-tip {
+            z-index: 99;
+            bottom: 30px;
+            right: 30px;
+        }
     </style>
 </head>
+
 <body>
 <!-- 导航栏 -->
-<header class="bg-white shadow-md">
+<header class="bg-blue-500 shadow-md"> <!-- 使用Tailwind的浅蓝色类 -->
     <div class="container mx-auto px-4 py-2 flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-gray-800">旅游日记共享平台</h1>
+        <h1 class="text-2xl font-bold text-white">旅游日记共享平台</h1>
         <div class="hidden md:block">
             <nav>
                 <ul class="flex space-x-4">
-                    <li><a href="/" class="text-gray-700 hover:text-yellow-500">首页</a></li>
-                    <li><a href="/log/log" class="text-gray-700 hover:text-yellow-500">搜索日志</a></li>
-                    <li><a href="/activity/activity" class="text-gray-700 hover:text-yellow-500">组团旅游活动</a></li>
-                    <li><a href="/user/to_login" class="text-gray-700 hover:text-yellow-500">用户登录</a></li>
-                    <li><a href="/user/to_userself" class="text-gray-700 hover:text-yellow-500">个人信息</a></li>
-                    <li><a href="/admin/toLogin" class="text-gray-700 hover:text-yellow-500">管理员登录</a></li>
+                    <li><a href="/" class="text-white hover:text-yellow-400 transition-colors">首页</a></li>
+                    <li><a href="/log/log" class="text-white hover:text-yellow-400 transition-colors">搜索日志</a></li>
+                    <li><a href="/activity/activity" class="text-white hover:text-yellow-400 transition-colors">组团旅游活动</a></li>
+                    <li><a href="/user/to_login" class="text-white hover:text-yellow-400 transition-colors">用户登录</a></li>
+                    <li><a href="/user/to_userself" class="text-white hover:text-yellow-400 transition-colors">个人信息</a></li>
+                    <li><a href="/admin/toLogin" class="text-white hover:text-yellow-400 transition-colors">管理员登录</a></li>
                 </ul>
             </nav>
         </div>
         <div class="md:hidden">
-            <button class="text-gray-700 focus:outline-none">
+            <button class="text-white focus:outline-none">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -196,6 +227,7 @@
                 <div class="recommendation-card">
                     <img th:src="'/img/'+${log.getLogImages()}+'/图1.png'" class="card-img-top" alt="热门景点1">
                     <div class="card-body">
+                        <h3 th:text="${log.getLogTitle()}"></h3>
                         <p class="card-text" th:text="${log.getLogContent()}"></p>
                     </div>
                 </div>
@@ -204,7 +236,7 @@
     </section>
     <!-- 景区服务介绍 -->
     <div class="container mx-auto py-8">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">景区服务</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">景区服务</h2>
         <div class="services">
             <div class="service">
                 <i class="fas fa-utensils text-yellow-500 text-3xl mb-2"></i>
@@ -220,8 +252,6 @@
             </div>
         </div>
     </div>
-
-
 </main>
 <!-- 底部 -->
 <footer class="bg-gray-100 py-4">
@@ -235,41 +265,33 @@
 <script type="module" crossorigin src="https://g.alicdn.com/aliyun-documentation/web-chatbot-ui/0.0.24/index.js"></script>
 <script>
     window.CHATBOT_CONFIG = {
-        endpoint: "https://webchatbot-woud-mkxhjqjfpv.cn-hangzhou.fcapp.run/chat", // 可以替换为 https://{your-fc-http-trigger-domain}/chat
-        displayByDefault: false, // 默认不显示 AI 助手对话框
-        title: 'AI 助手', // 自定义 AI 助手标题
-        draggable: true, // 是否开启拖拽
-        aiChatOptions: { // 自定义取值参考：https://docs.nlkit.com/nlux/reference/ui/ai-chat#conversation-options
-            conversationOptions: { // 自定义取值参考：https://docs.nlkit.com/nlux/reference/ui/ai-chat#conversation-options
+        endpoint: "https://webchatbot-woud-mkxhjqjfpv.cn-hangzhou.fcapp.run/chat",
+        displayByDefault: false,
+        title: 'AI 助手',
+        draggable: true,
+        aiChatOptions: {
+            conversationOptions: {
                 conversationStarters: [
-                    {prompt: '今天天气怎么样？'},
-                    {prompt: '你是谁？'},
-                    {prompt: '你们平台有什么特点?'},
+                    { prompt: '今天天气怎么样？' },
+                    { prompt: '你是谁？' },
+                    { prompt: '你们平台有什么特点?' },
                 ]
             },
-            displayOptions: { // 自定义取值参考：https://docs.nlkit.com/nlux/reference/ui/ai-chat#display-options
+            displayOptions: {
                 height: 600,
-                // width: 400,
             },
-            personaOptions: { // 自定义取值参考：https://docs.nlkit.com/nlux/reference/ui/ai-chat#chat-personas
+            personaOptions: {
                 assistant: {
                     name: '你好，我是你的 AI 助手',
-                    // AI 助手的图标
                     avatar: 'https://img.alicdn.com/imgextra/i2/O1CN01Pda9nq1YDV0mnZ31H_!!6000000003025-54-tps-120-120.apng',
                     tagline: '您可以尝试点击下方的快捷入口开启体验！',
                 }
             },
-            messageOptions: { // 自定义取值参考：https://docs.nlkit.com/nlux/reference/ui/ai-chat#message-options
+            messageOptions: {
                 waitTimeBeforeStreamCompletion: 'never'
             }
         },
         dataProcessor: {
-            /**
-             * 在向后端大模型应用发起请求前改写 Prompt。
-             * 比如可以用于总结网页场景，在发送前将网页内容包含在内，同时避免在前端显示这些内容。
-             * @param {string} prompt - 用户输入的 Prompt
-             * @param {string}  - 改写后的 Prompt
-             */
             rewritePrompt(prompt) {
                 return prompt;
             }
@@ -278,18 +300,16 @@
 </script>
 <style>
     :root {
-        /* webchat 工具栏的颜色 */
         --webchat-toolbar-background-color: #1464E4;
-        /* webchat 工具栏文字和按钮的颜色 */
         --webchat-toolbar-text-color: #FFF;
     }
-    /* webchat 对话框如果被遮挡，可以尝试通过 z-index、bottom、right 等设置 来调整*/
+
     .webchat-container {
         z-index: 100;
         bottom: 10px;
         right: 10px;
     }
-    /* webchat 的唤起按钮如果被遮挡，可以尝试通过 z-index、bottom、right 等设置 来调整。也可以通过 CSS 进一步定制唤起按钮的形状、大小等。 */
+
     .webchat-bubble-tip {
         z-index: 99;
         bottom: 20px;
@@ -297,9 +317,8 @@
     }
 </style>
 
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-
 </body>
+
 </html>

@@ -5,10 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>日志详情</title>
+  <!-- 引入外部样式库 -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/js/jquery-3.4.1.min.js"></script>
-
+  <!-- 自定义样式 -->
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -21,18 +23,18 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    /* 调整轮播图图片宽度相关样式 */
+    /* 轮播图样式 */
     .carousel img {
       width: 100%;
       height: 300px;
     }
 
     .carousel-item img {
-      width: 60%!important;
+      width: 60% !important;
       margin: 0 auto;
     }
 
-    /* 调整轮播图左右控制按钮的样式，使其位置更适配图片 */
+    /* 轮播图控制按钮样式 */
     .carousel-control-prev,
     .carousel-control-next {
       width: 10%;
@@ -52,13 +54,16 @@
       height: 30px;
     }
 
-    .hot-spots {
+    /* 热门景点和服务样式 */
+    .hot-spots,
+    .services {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
     }
 
-    .spot {
+    .spot,
+    .service {
       width: 30%;
       text-align: center;
       margin: 10px;
@@ -67,18 +72,6 @@
     .spot img {
       width: 100%;
       height: 200px;
-    }
-
-    .services {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-    }
-
-    .service {
-      width: 30%;
-      text-align: center;
-      margin: 10px;
     }
 
     footer {
@@ -114,11 +107,16 @@
     nav ul li a:hover {
       color: #ffc107;
     }
+
+    /* 按钮容器样式 */
+    .button-container {
+      margin-top: 20px;
+    }
   </style>
 </head>
 
 <body>
-<!-- 头部 -->
+<!-- 头部导航栏 -->
 <header class="bg-white shadow-md">
   <div class="container mx-auto px-4 py-2 flex justify-between items-center">
     <h1 class="text-2xl font-bold text-gray-800">旅游日记共享平台</h1>
@@ -141,6 +139,7 @@
     </div>
   </div>
 </header>
+
 <div class="container">
   <!-- 景点图片轮播 -->
   <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" style="margin-top: 20px">
@@ -152,10 +151,12 @@
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img th:src="'/img/'+${log.getLogImages()}+'/图1.png'" class="d-block w-100" alt="景点图片1">
+        <img th:src="'/img/' + ${log.getLogImages()} + '/图1.png'" class="d-block w-100"
+             alt="景点图片1">
       </div>
       <div class="carousel-item">
-        <img th:src="'/img/'+${log.getLogImages()}+'/图2.png'" class="d-block w-100" alt="景点图片2">
+        <img th:src="'/img/' + ${log.getLogImages()} + '/图2.png'" class="d-block w-100"
+             alt="景点图片2">
       </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -169,7 +170,7 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div>
-  <br>
+
   <!-- 景点信息展示 -->
   <div class="container mt-5">
     <div class="card">
@@ -195,12 +196,13 @@
         </table>
       </div>
     </div>
-    <!-- 按钮容器 -->
+
+    <!-- 评论按钮 -->
     <div class="button-container">
-      <!-- 发布按钮 -->
       <button type="button" class="btn btn-success" id="commentButton">发表评论</button>
     </div>
 
+    <!-- 评论列表 -->
     <table class="table table-striped">
       <thead>
       <tr>
@@ -213,13 +215,12 @@
       <tr th:each="Comment:${comment}" th:id="|tr${Comment.getCommentId()}|">
         <td th:text="匿名用户"></td>
         <td th:text="${Comment.getCommentContent()}"></td>
-        <td th:text="${#dates.format(Comment.getCommentTime(),'yyyy-MM-dd')}"></td>
+        <td th:text="${#dates.format(Comment.getCommentTime(), 'yyyy-MM-dd')}"></td>
       </tr>
-      <!-- 可以根据需要添加更多行 -->
       </tbody>
     </table>
-
   </div>
+
   <!-- 评论弹窗 -->
   <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel"
        aria-hidden="true">
@@ -248,37 +249,28 @@
   </div>
 </div>
 
-<!-- 引入Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-<!-- 引入jQuery库 -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- 引入Bootstrap JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-
+<!-- 自定义脚本 -->
 <script>
   $(document).ready(function () {
-    // 点击预约按钮显示弹窗
+    // 点击评论按钮显示弹窗
     $('#commentButton').click(function () {
       $('#commentModal').modal('show');
     });
 
-    // 点击确定预约按钮提交表单
+    // 点击确定评论按钮提交表单
     $('#confirmCommentButton').click(function () {
-      // 这里可以添加一些简单的前端验证逻辑，比如必填项是否填写等
+      // 简单的前端验证：检查评论内容是否为空
       if ($('#comment').val()) {
-        // 实际需要根据你的后端路由进行修改
+        // 设置表单提交地址
         $('#commentForm').attr('action', '/user/comment_submit');
+        // 提交表单
         $('#commentForm').submit();
       }
     });
-
-
   });
 </script>
-
-
-
-
 </body>
 
 </html>
